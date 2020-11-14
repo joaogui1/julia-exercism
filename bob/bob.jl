@@ -1,18 +1,19 @@
 function bob(stimulus)
-    stimulus = strip(stimulus)
-    letters = filter(isletter, collect(stimulus))
-    num_letters = size(letters)[1]
-    strupper = x -> isuppercase.(x)
-    
-    if size(letters)[1] > 0 && (prod ∘ strupper)(letters)
-        if stimulus[end] == '?'
+    last_idx = length(stimulus)
+    while last_idx > 0 && isspace(stimulus[last_idx])
+        last_idx -= 1
+    end
+    isupperletter(x) = isuppercase(x) || !isletter(x)
+
+    if any(isletter, stimulus) && all(isupperletter, stimulus[2:end])
+        if stimulus[last_idx] == '?'
             return "Calm down, I know what I'm doing!"
         else
             return "Whoa, chill out!"
         end
-    elseif isempty(stimulus)
+    elseif last_idx == 0
         return "Fine. Be that way!"
-    elseif stimulus[end] == '?'
+    elseif stimulus[last_idx] == '?'
         return "Sure."
     else
         "Whatever."
